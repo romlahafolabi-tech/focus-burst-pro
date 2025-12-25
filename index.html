@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Burst Pro</title>
+
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>🎯 Focus Burst Pro</h1>
+
+    <div id="stats">
+      🔥 Streak: <span id="streak">0</span> | ⏱ Sessions:
+      <span id="sessions">0</span>
+    </div>
+
+    <p id="timer">25:00</p>
+
+    <select id="duration">
+      <option value="25">25 min</option>
+      <option value="15">15 min</option>
+      <option value="5">5 min</option>
+    </select>
+
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+
+    <p id="challenge"></p>
+
+    <button onclick="toggleTheme()">🌙 / ☀️</button>
+
+    <audio id="sound" src="sound.wav"></audio>
+
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js");
+      }
+    </script>
+  </body>
+</html>
