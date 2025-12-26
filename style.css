@@ -12,41 +12,85 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: var(--bg);
+  background: linear-gradient(270deg, #0f172a, #1e293b, #0f172a);
+  background-size: 600% 600%;
   color: var(--text);
   text-align: center;
-  padding: 30px;
+  padding: 20px;
+  animation: gradientBG 20s ease infinite;
+  overflow: hidden;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 h1 {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
 }
-
 #timer {
-  font-size: 3.5rem;
-  margin: 20px 0;
+  font-size: 3rem;
+  margin: 15px 0;
 }
-
 button,
-select {
-  padding: 12px 18px;
-  margin: 8px;
+select,
+input {
+  padding: 10px 15px;
+  margin: 5px;
   font-size: 16px;
-  border: none;
   border-radius: 8px;
+  border: none;
   cursor: pointer;
 }
-
 button {
   background: var(--btn);
-  color: white;
+  color: #fff;
+}
+#motivation {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #facc15;
+  opacity: 0;
+  transition: opacity 1s;
+}
+table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid var(--text);
+  padding: 6px;
+  font-size: 14px;
 }
 
-#challenge {
-  margin-top: 25px;
-  font-size: 1.3rem;
+/* Floating particles */
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #facc15;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: floatUp 3s linear forwards;
 }
-
-#stats {
-  margin-bottom: 15px;
+@keyframes floatUp {
+  0% {
+    transform: translateY(0px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
 }

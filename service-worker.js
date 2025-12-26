@@ -9,6 +9,7 @@ self.addEventListener("install", (event) => {
           "./style.css",
           "./app.js",
           "./sound.wav",
+          "./manifest.json",
         ])
       )
   );
