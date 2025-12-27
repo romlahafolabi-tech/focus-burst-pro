@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deep Focus</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  </head>
+  <body>
+    <!-- Streak visible on all pages -->
+    <div class="streak-container">
+      <div class="streak-circle">
+        <img src="assets/fire.png" class="streak-fire" />
+        <span id="streakCount">0</span>
+      </div>
+    </div>
+
+    <!-- Home Page -->
+    <section id="homeSection" class="section center">
+      <button class="top-left-btn" id="howItWorksBtn">How it Works</button>
+      <img src="assets/logo.png" class="logo-img" alt="Deep Focus Logo" />
+      <button class="primary-btn" id="getStartedBtn">Get Started</button>
+    </section>
+
+    <!-- How it Works Page -->
+    <section
+      id="howItWorksSection"
+      class="section center"
+      style="display: none"
+    >
+      <button class="backBtn" data-back="homeSection">← Back</button>
+      <h2>How Deep Focus Works</h2>
+      <p class="info-text">
+        Deep Focus is a study timer app designed to help you concentrate and
+        track your productivity. You can set the purpose of your session, choose
+        a duration, and focus while tracking your streaks.
+      </p>
+    </section>
+
+    <!-- Setup Page -->
+    <section id="setupSection" class="section center" style="display: none">
+      <button class="backBtn" data-back="homeSection">← Back</button>
+      <h2>Set Your Focus</h2>
+      <input
+        id="purpose"
+        class="input"
+        placeholder="Purpose (e.g., Study, Exam Prep)"
+      />
+      <div class="time-row">
+        <input
+          id="duration"
+          type="number"
+          class="input small"
+          placeholder="25"
+        />
+        <select id="unit" class="input small">
+          <option value="minutes">Minutes</option>
+          <option value="seconds">Seconds</option>
+          <option value="hours">Hours</option>
+        </select>
+      </div>
+      <button class="primary-btn" id="beginBtn">Begin</button>
+      <button class="secondary-btn" id="historyBtn">History</button>
+    </section>
+
+    <!-- Timer Page -->
+    <section id="timerSection" class="section center" style="display: none">
+      <button class="backBtn" data-back="setupSection">← Back</button>
+      <div class="circle-timer">
+        <svg class="circle-svg" width="200" height="200">
+          <circle class="bg" cx="100" cy="100" r="90"></circle>
+          <circle class="progress" cx="100" cy="100" r="90"></circle>
+        </svg>
+        <span id="time">00:00</span>
+      </div>
+      <div id="quoteContainer"></div>
+      <div class="controls">
+        <button class="control-btn" id="pauseBtn">Pause</button>
+        <button class="control-btn" id="resumeBtn">Resume</button>
+        <button class="control-btn danger" id="endBtn">End</button>
+      </div>
+    </section>
+
+    <!-- History Page -->
+    <section id="historySection" class="section center" style="display: none">
+      <button class="backBtn" data-back="setupSection">← Back</button>
+      <h2>History</h2>
+      <table id="historyTable">
+        <tr>
+          <th>Purpose</th>
+          <th>Duration</th>
+          <th>Start</th>
+          <th>End</th>
+        </tr>
+      </table>
+    </section>
+
+    <audio id="sound" src="assets/sound.wav"></audio>
+
+    <script src="app.js"></script>
+  </body>
+</html>
