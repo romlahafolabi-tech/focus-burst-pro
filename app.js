@@ -1,179 +1,175 @@
-let interval, motivationInterval;
-let remainingTime;
-let streak = Number(localStorage.getItem("streak")) || 0;
+// SCREENS
+let screens = document.querySelectorAll(".screen");
+
+// SESSIONS
 let sessions = Number(localStorage.getItem("sessions")) || 0;
 
-const studyChallenges = {
-  general: ["💧 Drink water", "🧍 Stretch", "🧠 Deep breathing"],
-  dsa: [
-    "📌 Revise an algorithm",
-    "✍️ Write edge case",
-    "🧠 Explain concept out loud",
-  ],
-  exam: [
-    "📝 Recall 3 key points",
-    "📖 Skim notes",
-    "❓ Answer 1 practice question",
-  ],
-};
-const motivationalWords = [
-  "Keep going!",
-  "You got this!",
-  "Stay focused!",
-  "Almost there!",
-  "Great job!",
+// ELEMENTS
+const sessionCount = document.getElementById("sessionCount");
+const timeDisplay = document.getElementById("timeDisplay");
+const quoteBox = document.getElementById("quoteBox");
+const sound = document.getElementById("sound");
+const purposeInput = document.getElementById("purpose");
+const timeValue = document.getElementById("timeValue");
+const timeUnit = document.getElementById("timeUnit");
+
+sessionCount.textContent = sessions;
+
+// TIMER VARIABLES
+let remainingTime = 0;
+let timerInterval;
+let quoteIndex = 0;
+let quoteInterval;
+let quoteList = [
+  "Stay with it.",
+  "You chose this purpose.",
+  "Don’t quit now.",
+  "This is discipline.",
+  "You’re building focus.",
 ];
 
-document.getElementById("streak").textContent = streak;
-document.getElementById("sessions").textContent = sessions;
+// NAVIGATION
+function goTo(id) {
+  screens.forEach((s) => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-// Timer
-function startTimer() {
-  const h = Number(document.getElementById("durationHour").value) || 0;
-  const m = Number(document.getElementById("durationMin").value) || 0;
-  const s = Number(document.getElementById("durationSec").value) || 0;
-  remainingTime = h * 3600 + m * 60 + s;
-  if (remainingTime <= 0) {
-    alert("Please enter duration.");
-    return;
-  }
+// START SESSION
+function startSession() {
+  let value = Number(timeValue.value);
+  if (!value) return alert("Set a time");
 
-  const purpose =
-    document.getElementById("sessionPurpose").value || "No purpose";
-  const mode = document.getElementById("studyMode").value;
-  const startTime = new Date().toLocaleString();
+  let unit = timeUnit.value;
+  if (unit === "seconds") remainingTime = value;
+  if (unit === "minutes") remainingTime = value * 60;
+  if (unit === "hours") remainingTime = value * 3600;
 
-  document.getElementById("preSession").style.display = "none";
-  document.getElementById("sessionArea").style.display = "block";
+  goTo("timer");
+  runTimer();
+  rotateQuotes();
+}
 
-  interval = setInterval(() => {
+// TIMER LOGIC
+function runTimer() {
+  updateDisplay();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
     remainingTime--;
-    updateTimerDisplay();
-    showMotivation();
-    createParticle();
-    if (remainingTime <= 0) finishSession(purpose, mode, startTime);
+    if (remainingTime < 0) remainingTime = 0; // Fix negative countdown
+    updateDisplay();
+    if (remainingTime <= 0) finishSession();
   }, 1000);
 }
 
-function updateTimerDisplay() {
-  const h = Math.floor(remainingTime / 3600);
-  const m = Math.floor((remainingTime % 3600) / 60);
-  const s = remainingTime % 60;
-  document.getElementById("timer").textContent = `${String(h).padStart(
+function updateDisplay() {
+  let m = Math.floor(remainingTime / 60);
+  let s = remainingTime % 60;
+  timeDisplay.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(
     2,
     "0"
-  )}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  )}`;
 }
 
-function showMotivation() {
-  const msg =
-    motivationalWords[Math.floor(Math.random() * motivationalWords.length)];
-  const mot = document.getElementById("motivation");
-  mot.textContent = msg;
-  mot.style.opacity = 1;
-  setTimeout(() => {
-    mot.style.opacity = 0;
-  }, 18000);
+// PAUSE / RESUME
+function pause() {
+  clearInterval(timerInterval);
+}
+function resume() {
+  runTimer();
 }
 
-function createParticle() {
-  const particle = document.createElement("div");
-  particle.classList.add("particle");
-  particle.style.left = Math.random() * window.innerWidth + "px";
-  particle.style.top = window.innerHeight + "px";
-  document.body.appendChild(particle);
-  setTimeout(() => particle.remove(), 3000);
-}
+// FINISH SESSION
+function finishSession() {
+  clearInterval(timerInterval);
+  remainingTime = 0;
+  updateDisplay();
+  sound.play();
+  confetti();
 
-function pauseTimer() {
-  clearInterval(interval);
-}
-
-function resumeTimer() {
-  interval = setInterval(() => {
-    remainingTime--;
-    updateTimerDisplay();
-    showMotivation();
-    createParticle();
-    if (remainingTime <= 0)
-      finishSession(
-        "Resumed session",
-        document.getElementById("studyMode").value,
-        new Date().toLocaleString()
-      );
-  }, 1000);
-}
-
-function finishSession(purpose, mode, startTime) {
-  clearInterval(interval);
-  document.getElementById("timer").textContent = "00:00:00";
-
-  // Play sound once
-  document.getElementById("sound").play();
-  // Confetti
-  confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-
-  streak++;
+  // SESSIONS
   sessions++;
-  localStorage.setItem("streak", streak);
   localStorage.setItem("sessions", sessions);
-  document.getElementById("streak").textContent = streak;
-  document.getElementById("sessions").textContent = sessions;
+  sessionCount.textContent = sessions;
 
-  const challengeList = studyChallenges[mode];
-  const randomChallenge =
-    challengeList[Math.floor(Math.random() * challengeList.length)];
-  document.getElementById("challenge").textContent =
-    "🎉 Session complete! " + randomChallenge;
+  saveHistory(true);
+  goTo("setup");
 
-  // History
-  const endTime = new Date().toLocaleString();
-  const durationUsed = formatDuration(h * 3600 + m * 60 + s);
-  const history = JSON.parse(localStorage.getItem("history") || "[]");
+  // VIBRATION (MOBILE)
+  if ("vibrate" in navigator) navigator.vibrate([100, 50, 100]);
+}
+
+// END SESSION
+function endSession() {
+  clearInterval(timerInterval);
+  saveHistory(false);
+  goTo("setup");
+}
+
+// QUOTES ROTATION (GLIDE UP SLOWLY)
+function rotateQuotes() {
+  clearInterval(quoteInterval);
+
+  quoteBox.textContent = quoteList[quoteIndex % quoteList.length];
+  quoteBox.classList.add("slide-up");
+  quoteIndex++;
+
+  quoteInterval = setInterval(() => {
+    // slide out current quote
+    quoteBox.classList.remove("slide-up");
+    quoteBox.classList.add("slide-out");
+
+    setTimeout(() => {
+      quoteBox.textContent = quoteList[quoteIndex % quoteList.length];
+      quoteBox.classList.remove("slide-out");
+      quoteBox.classList.add("slide-up");
+      quoteIndex++;
+    }, 1000); // match CSS animation duration
+  }, 6000);
+}
+
+// HISTORY
+function saveHistory(completed) {
+  let history = JSON.parse(localStorage.getItem("history") || "[]");
   history.push({
-    purpose,
-    mode,
-    duration: durationUsed,
-    start: startTime,
-    end: endTime,
+    purpose: purposeInput.value || "No purpose",
+    completed,
+    date: new Date().toLocaleString(),
   });
   localStorage.setItem("history", JSON.stringify(history));
   renderHistory();
-
-  document.getElementById("preSession").style.display = "block";
-  document.getElementById("sessionArea").style.display = "none";
-}
-
-function formatDuration(seconds) {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = seconds % 60;
-  return `${h}h ${m}m ${s}s`;
 }
 
 function renderHistory() {
-  const table = document.getElementById("historyTable");
-  table.innerHTML = `<tr>
-    <th>Purpose</th><th>Mode</th><th>Duration</th><th>Start</th><th>End</th>
-  </tr>`;
-  const history = JSON.parse(localStorage.getItem("history") || "[]");
-  history.forEach((h) => {
-    const row = table.insertRow();
-    row.insertCell(0).textContent = h.purpose;
-    row.insertCell(1).textContent = h.mode;
-    row.insertCell(2).textContent = h.duration;
-    row.insertCell(3).textContent = h.start;
-    row.insertCell(4).textContent = h.end;
+  let list = document.getElementById("historyList");
+  list.innerHTML = "";
+  let history = JSON.parse(localStorage.getItem("history") || "[]");
+  history.reverse().forEach((h) => {
+    let div = document.createElement("div");
+    div.textContent = `${h.date} - ${h.purpose} - ${
+      h.completed ? "Completed" : "Broken"
+    }`;
+    list.appendChild(div);
   });
 }
 
-renderHistory();
-
-function resetTimer() {
-  clearInterval(interval);
-  remainingTime = 0;
-  updateTimerDisplay();
-  document.getElementById("sessionArea").style.display = "none";
-  document.getElementById("preSession").style.display = "block";
-  document.getElementById("challenge").textContent = "";
+// RESET MODAL
+function openReset() {
+  document.getElementById("resetModal").style.display = "flex";
+}
+function closeReset() {
+  document.getElementById("resetModal").style.display = "none";
+}
+function resetHistory() {
+  localStorage.removeItem("history");
+  renderHistory();
+  closeReset();
+}
+function resetSessions() {
+  localStorage.removeItem("sessions");
+  sessionCount.textContent = 0;
+  closeReset();
+}
+function resetAll() {
+  localStorage.clear();
+  location.reload();
 }

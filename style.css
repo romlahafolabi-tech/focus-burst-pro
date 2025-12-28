@@ -1,27 +1,229 @@
-:root {
-  --bg: #0f172a;
-  --text: #e5e7eb;
-  --btn: #22c55e;
-}
-
-.light {
-  --bg: #f9fafb;
-  --text: #111827;
-  --btn: #2563eb;
-}
-
+html,
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(270deg, #0f172a, #1e293b, #0f172a);
-  background-size: 600% 600%;
-  color: var(--text);
-  text-align: center;
-  padding: 20px;
-  animation: gradientBG 20s ease infinite;
+  height: 100%;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+body {
+  margin: 0;
+  background: linear-gradient(120deg, #0f172a, #1e293b);
+  color: #e5e7eb;
   overflow: hidden;
 }
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 40px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.screen.active {
+  display: flex;
+}
 
-@keyframes gradientBG {
+.logo {
+  width: 500px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+/* BUTTONS */
+.main-btn,
+.secondary-btn,
+.how-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 5px;
+}
+.main-btn:hover,
+.secondary-btn:hover,
+.how-btn:hover {
+  background: #2563eb;
+}
+.end {
+  background: #ef4444;
+}
+
+.back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  color: #cbd5f5;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.streak {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #020617;
+  padding: 10px 14px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.streak-text {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #facc15;
+}
+
+/* TIMER CIRCLE */
+.circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 8px solid #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  margin: 20px auto;
+}
+
+/* QUOTES */
+#quoteBox {
+  height: 40px;
+  margin-top: 20px;
+  color: #facc15;
+  font-size: 18px;
+}
+
+/* TIME INPUTS */
+input,
+select {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  width: 240px;
+  margin: 8px;
+}
+
+.time-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* CONTROLS */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* RESET MODAL */
+#resetModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.modal {
+  background: #020617;
+  padding: 20px;
+  border-radius: 14px;
+  width: 260px;
+  text-align: center;
+}
+.modal button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+.reset-warning {
+  color: #ef4444;
+  font-size: 14px;
+}
+
+/* Top-left "How it works" button */
+.top-left-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  color: #cbd5f5;
+  border: 1px solid #64748b;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.top-left-btn:hover {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* MOTIVATIONAL QUOTE ANIMATION */
+.slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: glideUp 1s forwards;
+}
+
+.slide-out {
+  opacity: 1;
+  transform: translateY(0);
+  animation: glideDown 1s forwards;
+}
+
+@keyframes glideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glideDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Animated Gradient Background */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  overflow: hidden;
+  background: linear-gradient(270deg, #0f172a, #1e293b, #3b82f6, #ef4444);
+  background-size: 800% 800%;
+  animation: gradientMove 30s ease infinite;
+  color: #e5e7eb;
+}
+
+@keyframes gradientMove {
   0% {
     background-position: 0% 50%;
   }
@@ -30,67 +232,5 @@ body {
   }
   100% {
     background-position: 0% 50%;
-  }
-}
-
-h1 {
-  font-size: 2.2rem;
-}
-#timer {
-  font-size: 3rem;
-  margin: 15px 0;
-}
-button,
-select,
-input {
-  padding: 10px 15px;
-  margin: 5px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-button {
-  background: var(--btn);
-  color: #fff;
-}
-#motivation {
-  font-size: 1.2rem;
-  margin-top: 10px;
-  color: #facc15;
-  opacity: 0;
-  transition: opacity 1s;
-}
-table {
-  width: 100%;
-  margin-top: 15px;
-  border-collapse: collapse;
-}
-th,
-td {
-  border: 1px solid var(--text);
-  padding: 6px;
-  font-size: 14px;
-}
-
-/* Floating particles */
-.particle {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #facc15;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.8;
-  animation: floatUp 3s linear forwards;
-}
-@keyframes floatUp {
-  0% {
-    transform: translateY(0px);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(-100px);
-    opacity: 0;
   }
 }
