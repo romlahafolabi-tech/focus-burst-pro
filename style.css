@@ -1,7 +1,9 @@
 html,
 body {
-  height: 100%;
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* no scroll */
 }
 
 * {
@@ -16,21 +18,23 @@ body {
 }
 .screen {
   display: none;
-  min-height: 100vh;
-  padding: 40px;
-  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.screen.active {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.screen.active {
-  display: flex;
-}
 
 .logo {
   width: 500px;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  max-width: 100%;
+  height: auto;
 }
 
 /* BUTTONS */
@@ -233,4 +237,11 @@ body {
   100% {
     background-position: 0% 50%;
   }
+}
+
+.page-content {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  text-align: center;
 }

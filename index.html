@@ -20,11 +20,13 @@
     <section id="home" class="screen active">
       <button class="top-left-btn" onclick="goTo('how')">How it works</button>
 
-      <img src="logo.png" class="logo" />
+      <div class="page-content">
+        <img src="logo.png" class="logo" />
 
-      <button class="main-btn" onclick="goTo('setup')">Get Started</button>
-      <button class="main-btn" onclick="goTo('history')">History</button>
-      <button class="main-btn" onclick="openReset()">Reset</button>
+        <button class="main-btn" onclick="goTo('setup')">Get Started</button>
+        <button class="main-btn" onclick="goTo('history')">History</button>
+        <button class="main-btn" onclick="openReset()">Reset</button>
+      </div>
     </section>
 
     <!-- HOW IT WORKS PAGE -->
@@ -66,39 +68,44 @@
     <section id="setup" class="screen">
       <button class="back" onclick="goTo('home')">←</button>
 
-      <input id="purpose" placeholder="What are you focusing on?" />
+      <div class="page-content">
+        <input id="purpose" placeholder="What are you focusing on?" />
 
-      <div class="time-row">
-        <input id="timeValue" type="number" placeholder="Time" />
-        <select id="timeUnit">
-          <option value="seconds">Seconds</option>
-          <option value="minutes">Minutes</option>
-          <option value="hours">Hours</option>
-        </select>
+        <div class="time-row">
+          <input id="timeValue" type="number" placeholder="Time" />
+          <select id="timeUnit">
+            <option value="seconds">Seconds</option>
+            <option value="minutes">Minutes</option>
+            <option value="hours">Hours</option>
+          </select>
+        </div>
+
+        <button class="main-btn" onclick="startSession()">Begin</button>
       </div>
-
-      <button class="main-btn" onclick="startSession()">Begin</button>
     </section>
 
     <!-- TIMER PAGE -->
     <section id="timer" class="screen">
       <button class="back" onclick="endSession()">←</button>
+      <div class="page-content">
+        <div class="circle" id="timeDisplay">00:00</div>
+        <div id="quoteBox"></div>
 
-      <div class="circle" id="timeDisplay">00:00</div>
-      <div id="quoteBox"></div>
-
-      <div class="controls">
-        <button class="main-btn" onclick="pause()">Pause</button>
-        <button class="main-btn" onclick="resume()">Resume</button>
-        <button class="main-btn end" onclick="endSession()">End</button>
+        <div class="controls">
+          <button class="main-btn" onclick="pause()">Pause</button>
+          <button class="main-btn" onclick="resume()">Resume</button>
+          <button class="main-btn end" onclick="endSession()">End</button>
+        </div>
       </div>
     </section>
 
     <!-- HISTORY PAGE -->
     <section id="history" class="screen">
       <button class="back" onclick="goTo('home')">←</button>
-      <h2>Your Focus History</h2>
-      <div id="historyList"></div>
+      <div class="page-content">
+        <h2>Your Focus History</h2>
+        <div id="historyList"></div>
+      </div>
     </section>
 
     <!-- RESET MODAL -->
